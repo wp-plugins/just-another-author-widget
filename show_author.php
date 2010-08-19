@@ -3,7 +3,7 @@
 Plugin Name: Just Another Author Widget
 Plugin URI: http://blog.tommyolsen.net/category/programming/wp-prog/
 Description: Shows information about the Post author in the Widget Area
-Version: 0.1.1
+Version: 0.1.2
 Author: Tommy Stigen Olsen
 Author URI: http://blog.tommyolsen.net
 License: BSD
@@ -16,10 +16,11 @@ function showauthor_widget($args)
 	{
 		global $authordata;
 		
-		// Get saved Option Value
+		// Fetching Saved Options
 		$options = get_option('showauthor_widget');
 		
-		$dir = ABSPATH . 'wp-content/plugins/show_author/';
+		// Finding plugin install dir,
+		$dir = ABSPATH . 'wp-content/plugins/just-another-author-widget/';
 		$content = file_get_contents($dir . "widget_template.html");
 		
 		// Replacing markers in the included text with data
