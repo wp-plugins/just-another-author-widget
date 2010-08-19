@@ -18,7 +18,7 @@ So i made another one which is more versatile and easier to modify to your own l
 
 The installation process of this plugin is very simple.
 
-1. Upload the folder `show_author` to `/wp-content/plugins/` folder. (show_author.php and wiget_template.html)
+1. Upload the folder and content `just-another-author-widget` to `/wp-content/plugins/` folder. 
 1. Activate the plugin from the Plugins menu in the Wordpress Administrative Panel
 1. Place the Widget at desired location from the Widget Menu in the Wordpress Administrative Panel
 
@@ -41,6 +41,8 @@ __WEBSITE__ will return a link to the authors website(if he has one)
 None at this time
 
 == Changelog ==
+= 0.1.3 =
+* Added External styles.
 = 0.1.2 = 
 * Fixed bug that made the plugin look for the template in the wrong directory!
 = 0.1.1 =
