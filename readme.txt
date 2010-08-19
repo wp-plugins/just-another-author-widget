@@ -41,7 +41,8 @@ __WEBSITE__ will return a link to the authors website(if he has one)
 None at this time
 
 == Changelog ==
-
+= 0.1.2 = 
+* Fixed bug that made the plugin look for the template in the wrong directory!
 = 0.1.1 =
 * Widget Control improvements, removed some useless controls and some inline help.
 = 0.1 =
