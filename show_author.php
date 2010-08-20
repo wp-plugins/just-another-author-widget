@@ -3,7 +3,7 @@
 Plugin Name: Just Another Author Widget
 Plugin URI: http://blog.tommyolsen.net/category/programming/wp-prog/
 Description: Shows information about the Post author in the Widget Area
-Version: 0.1.2
+Version: 0.1.3
 Author: Tommy Stigen Olsen
 Author URI: http://blog.tommyolsen.net
 License: BSD
@@ -109,7 +109,7 @@ function showauthor_widget_control()
 	}
   	
   	// Utgang
-  	echo '<p>'._e('Title');
+  	echo '<p>'._e('<b>Title</b>');
   		echo '<input type="text" style="width:220px" id="show_author-widget-title" name="show_author-widget-title" value="'. $options['title'].'" />';
 	echo '</p>';
   	echo '<p>'._e('Display Options');
@@ -132,16 +132,15 @@ function showauthor_widget_control()
   		$checked = "checked";
   	echo '<input type="checkbox" name="show_author-show_website" id="show_author-show_website" value="true" ' . $checked . '/>Show Author Website link Text';
 	echo '</p>';
-	
-	echo '<p>'._e('More Text');
-		echo '<input type="text" style="width:220px" id="show_author-widget-moretext" name="show_author-widget-moretext" value="'. $options['moretext'].'" />';
-	echo '</p>';
-	echo '<p>'._e('Summary trim text');
+	echo '<p>'._e('<b>Summary Trim Text</b>');
 		echo '<input type="text" style="width:220px" id="show_author-widget-readfulltext" name="show_author-widget-readfulltext" value="'. $options['readfulltext'].'" />';
 	echo '</p>';
-	echo '<p>'._e('Link Description Text').'<input type="text" style="width:220px" id="show_author-widget-websitelinktext" name="show_author-widget-websitelinktext" value="' . $options['websitelinktext'] .'" />';
+	echo '<p>'._e('<b>More From Author Link Text</b>');
+		echo '<input type="text" style="width:220px" id="show_author-widget-moretext" name="show_author-widget-moretext" value="'. $options['moretext'].'" />';
 	echo '</p>';
-	echo '<p>'._e('Max Summary Length');
+	echo '<p>'._e('<b>Link Description Text</b>').'<input type="text" style="width:220px" id="show_author-widget-websitelinktext" name="show_author-widget-websitelinktext" value="' . $options['websitelinktext'] .'" />';
+	echo '</p>';
+	echo '<p>'._e('<b>Max Summary Length</b>');
 		echo '<input type="text" style="width:220px" id="show_author-widget-charlimit" name="show_author-widget-charlimit" value="'. $options['charlimit'].'" />';
 	echo '</p>';
 	echo '<p>'._e('<b>NB</b>');
@@ -166,16 +165,42 @@ function showauthor_activate()
 	  		'websitetext' => 'Website: __LINK__'
 	  		)
 	  	);
-	 
-	 // Register Widget
 	 add_option("showauthor_widget", $options['widget']);
-	 // Widget Registered
+	 
+	 // Load the backuped template!
+	 
+	 $used_template_path = ABSPATH . 'wp-content/plugins/just-another-author-widget/widget_template.html';
+	 $saved_template_path = ABSPATH . 'wp-content/plugins/just-another-author-widget/saved_template.html';
+	 if( file_exists($saved_template_path) )
+	 {
+	 	if(!copy($saved_template_path, $used_template_path))
+	 	{
+	 		echo 'JAAW failed to copy the saved template, you must do so yourself!';
+	 	}
+	 	else
+	 	{
+	 		unlink($saved_template_path);
+	 	}
+	 	
+	 }
 	 
 	 return;
 }
 function showauthor_deactivate()
 {
+	// Delete Widget
 	delete_option("showauthor_widget");
+	
+	// Backup the widget_template.html file.
+	
+	$used_template_path = ABSPATH . 'wp-content/plugins/just-another-author-widget/widget_template.html';
+	$saved_template_path = ABSPATH . 'wp-content/plugins/just-another-author-widget/saved_template.html';
+	if(!copy($used_template_path, $saved_template_path))
+	{
+		echo 'JAAW was unable to backup the used widget_template.html, you might want to do so yourself!';
+	}
+	
+	
 	return;
 }
 function showauthor_init()
@@ -187,9 +212,22 @@ function showauthor_init()
 	
 	return; 
 }
+function showauthor_addstyle()
+{
+	$style = WP_PLUGIN_URL . '/just-another-author-widget/jaaw-style.css';
+    $location = WP_PLUGIN_DIR . '/just-another-author-widget/jaaw-style.css';
 
+	if( file_exists($location) )
+	{
+        wp_register_style('template', $style);
+        wp_enqueue_style( 'template');
+
+	}	
+}
 // ACTIONS
 add_action('activate_'.plugin_basename(__FILE__), 'showauthor_activate');
 add_action('deactivate_'.plugin_basename(__FILE__), 'showauthor_deactivate');
 add_action('init', 'showauthor_init');
+add_action('wp_print_styles', 'showauthor_addstyle');
+
 ?>
