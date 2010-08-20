@@ -1,0 +1,14 @@
+div.jaaw-image_holder
+{
+	float: left; 
+	
+	width: 96px; 
+	margin: 6px; 
+	
+}
+
+div.jaaw-summary-holder
+{
+	height: 118px; 
+	background-color: transparent;
+}
