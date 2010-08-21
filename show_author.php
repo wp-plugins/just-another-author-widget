@@ -3,7 +3,7 @@
 Plugin Name: Just Another Author Widget
 Plugin URI: http://blog.tommyolsen.net/category/programming/wp-prog/
 Description: Shows information about the Post author in the Widget Area
-Version: 0.1.3
+Version: 0.2.1
 Author: Tommy Stigen Olsen
 Author URI: http://blog.tommyolsen.net
 License: BSD
@@ -14,53 +14,100 @@ function showauthor_widget($args)
 {
 	if(is_single())
 	{
+		$starttime = microtime(true);
 		global $authordata;
-		
-		// Fetching Saved Options
 		$options = get_option('showauthor_widget');
 		
 		// Finding plugin install dir,
 		$dir = ABSPATH . 'wp-content/plugins/just-another-author-widget/';
-		$content = file_get_contents($dir . "widget_template.html");
+		$content = file_get_contents($dir . "template_widget.html");
 		
-		// Replacing markers in the included text with data
+		/*
 		
-		// Replacing :__TITLE__
-		if($options['title'] != "")
-			$content = str_replace("__TITLE__", '<h4>' . $options['title'] . '</h4>', $content);
-		else
-			$content = str_replace("__TITLE__", "", $content);
+		
+		
+		
+		*/
+		// Show the content
+		//
+		
+		$parg = array();	// Replace arguments in here
+		
+		$parg['title'] = $options['title'];
+		$parg['author'] = $authordata->display_name;
+		
+		// IF DISPLAY IMG
+		if($options['display_img'])
+			$parg['image'] = get_avatar($authordata->ID, $options['avatar_size']);
 			
-		// Replacing __AUTHOR_NAME__
-			$author_display = $authordata->display_name;
-			$content = str_replace("__AUTHOR_NAME__", $author_display, $content);
-		
-		// Replacing __IMAGE__
-		if($options['show_image'])
-			$content = str_replace("__IMAGE__", get_avatar($authordata->ID, 96), $content);
+		// IF DISPLAY PROFILE
+		if($options['display_profile'])
+			$parg['shortprofile'] = summary_trim(get_the_author_description($authordata->ID), $options['profile_length'], "...");
 		else
-			$content = str_replace("__IMAGE__", "", $content);
+			$parg['shortprofile'] = "";
 		
-		// Replacing __TEXT__
-		if($options['show_text'])
-			$content = str_replace("__TEXT__", summary_trim(get_the_author_description($authordata->ID), $options['charlimit']), $content);
-		else
-			$content = str_replace("__TEXT__", "", $content);
-		
-		// Replacing __READMORE__
-		$content = str_replace("__READMORE__", '<a href="/author/' . get_the_author_login($authordata->ID) . '">'. $options['moretext'] . '</a>', $content);
-		
-		// Replacing __WEBSITE__ 
-		$url = get_the_author_url($authordata->ID);
-		if($url != "" && $options['show_website'])
+		// Dispaly author website link
+		if($options['display_author_webpage_link'])
 		{
-			$content = str_replace("__WEBSITE__", '<a href="'.$url.'">' . $options['websitelinktext'] . '</a>', $content);
+			$link = get_the_author_url($authordata->ID); 
+			$text = $options['text_link'];
+			if($link != "")
+			{
+				$parg['webpagelink'] = '<a href="' . $link . '">' . $text . '</a>';
+			}
+			else
+				$parg['webpagelink'] = "";
 		}
 		else
-			$content = str_replace("__WEBSITE__", "", $content);
+			$parg ['webpagelink'] = '';
+			
+		// Dispaly author website link
+		if($options['display_author_profile_link'])
+		{
+			$link = get_author_link(false, $authordata->ID);
+			$text = $options['text_author'];
+			if($link != "")
+			{
+				$parg['profilelink'] = '<a href="' . $link . '">' . $text . '</a>';
+			}
+			else
+				$parg['profilelink'] = "";
+		}
+		else
+			$parg ['profilelink'] = '';
+			
+		// POSTCOUNTER
+		if($options['enable_tag_postcount'])	$parg['postcount'] = get_usernumposts($authordata->ID);
+		if($options['enable_tag_profile'])		$parg['fullprofile'] = get_the_author_description($authordata->ID);
+		if($options['enable_tag_site-url'])		$parg['webpageurl'] = get_the_author_url($authordata->ID);
+		if($options['enable_tag_site-text'])	$parg['webpagetext'] = $options['text_link'];
+		if($options['enable_tag_profile-url'])	$parg['profileurl'] = get_author_link(false, $authordata->ID);
+		if($options['enable_tag_profile-text'])	$parg['profiletext'] = $options['text_author'];
+		If($options['enable_tag_authorfullname']) $parg['authorfullname'] = get_the_author_firstname($authordata->ID) . " " . get_the_author_lastname($authordata->ID);
+			
+		// Start parsing $parg
+		$key_ar = array_keys($parg);
+		foreach($key_ar as $key)
+			$content = str_replace("[" . strtoupper($key) . "]", $parg[$key], $content);
 		
-		// Show the content
+			
+		/*
+		
+		
+		
+		
+		
+		
+		*/
 		echo $content;
+		
+		
+		$endtime = microtime(true);
+		if($options['microtime'])
+		{
+			$options['microtime_stored_time'] = $endtime - $starttime;
+			update_option('showauthor_widget', $options);
+		}
 	}
 }
 function summary_trim($text, $length = 100, $trimend = "...")
@@ -78,28 +125,54 @@ function showauthor_widget_control()
 	$options = $newoptions = get_option('showauthor_widget'); // get options
   
 	// set new options
-	if( $_POST['show_author-widget-submit'] ) {
-		$newoptions['title'] = strip_tags( stripslashes($_POST['show_author-widget-title']) );		
-		$newoptions['readfulltext'] = strip_tags( stripslashes($_POST['show_author-widget-readfulltext']) );
-		$newoptions['moretext'] = $_POST['show_author-widget-moretext'];
-		$newoptions['websitetext'] = $_POST['show_author-widget-websitetext'];
-		$newoptions['charlimit'] = strip_tags( stripslashes($_POST['show_author-widget-charlimit']) );
-		$newoptions['websitelinktext'] = strip_tags( stripslashes($_POST['show_author-widget-websitelinktext']) );
+	if( $_POST['jaaw-submit'] ) {
+		$newoptions['title'] = strip_tags( stripslashes($_POST['jaaw-title']) );		
+		$newoptions['profile_length'] = strip_tags(stripslashes($_POST['jaaw-profile_length']));
+		$newoptions['text_link'] = strip_tags(stripslashes($_POST['jaaw-text_link']));
+		$newoptions['text_author'] = strip_tags(stripslashes($_POST['jaaw-text_author']));
+		$newoptions['avatar_size'] = strip_tags(stripslashes($_POST['jaaw-avatar_size']));
+		
 		
 		// Show Image 
-		if($_POST['show_author-show_image'])
-			$newoptions['show_image'] = true;
-		else
-			$newoptions['show_image'] = false;
+		if($_POST['jaaw-display_img'])					$newoptions['display_img'] = true;
+		else											$newoptions['display_img'] = false;
 		
-		if($_POST['show_author-show_text'])
-			$newoptions['show_text'] = true;
-		else
-			$newoptions['show_text'] = false;
-		if($_POST['show_author-show_website'])
-			$newoptions['show_website'] = true;
-		else
-			$newoptions['show_website'] = false;
+		if($_POST['jaaw-display_profile'])				$newoptions['display_profile'] = true;
+		else											$newoptions['display_profile'] = false;
+ 		
+		if($_POST['jaaw-display_author_webpage_link'])	$newoptions['display_author_webpage_link'] = true;
+		else											$newoptions['display_author_webpage_link'] = false;
+		
+		if($_POST['jaaw-display_author_profile_link'])	$newoptions['display_author_profile_link'] = true;
+		else											$newoptions['display_author_profile_link'] = false;
+		
+		if($_POST['jaaw-display_im_icons'])				$newoptions['display_im_icons'] = true;
+		else											$newoptions['display_im_icons'] = false;
+		
+		if($_POST['jaaw-enable_tag_postcount'])			$newoptions['enable_tag_postcount'] = true;
+		else											$newoptions['enable_tag_postcount'] = false;	
+				
+		if($_POST['jaaw-enable_tag_profile'])			$newoptions['enable_tag_profile'] = true;
+		else											$newoptions['enable_tag_profile'] = false;		
+			
+		if($_POST['jaaw-enable_tag_site-url'])			$newoptions['enable_tag_site-url'] = true;
+		else											$newoptions['enable_tag_site-url'] = false;
+		
+		if($_POST['jaaw-enable_tag_site-text'])			$newoptions['enable_tag_site-text'] = true;
+		else											$newoptions['enable_tag_site-text'] = false;
+		
+		if($_POST['jaaw-enable_tag_profile-url'])		$newoptions['enable_tag_profile-url'] = true;
+		else											$newoptions['enable_tag_profile-url'] = false;
+		
+		if($_POST['jaaw-enable_tag_profile-text'])		$newoptions['enable_tag_profile-text'] = true;
+		else											$newoptions['enable_tag_profile-text'] = false;
+		
+		if($_POST['jaaw-enable_tag_authorfullname'])	$newoptions['enable_tag_authorfullname'] = true;
+		else											$newoptions['enable_tag_authorfullname'] = false;	
+		
+		if($_POST['jaaw-microtime'])					$newoptions['microtime'] = true;
+		else											$newoptions['microtime'] = false;	
+
 	}
   
 	// update options if needed
@@ -108,45 +181,110 @@ function showauthor_widget_control()
 		update_option('showauthor_widget', $options);
 	}
   	
-  	// Utgang
-  	echo '<p>'._e('<b>Title</b>');
-  		echo '<input type="text" style="width:220px" id="show_author-widget-title" name="show_author-widget-title" value="'. $options['title'].'" />';
-	echo '</p>';
-  	echo '<p>'._e('Display Options');
-  	
-  	// Show Image Checkbox
-  	$checked = "";
-  	if($options['show_image'])
-  		$checked = "checked";
-  	echo '<input type="checkbox" name="show_author-show_image" id="show_author-show_image" value="true" ' . $checked . '/>Show Image/Avatar<br />';
-  	
-  	// Show Text Checkbox
-  	$checked = "";
-  	if($options['show_text'])
-  		$checked = "checked";
-  	echo '<input type="checkbox" name="show_author-show_text" id="show_author-show_text" value="true" ' . $checked . '/>Show Summary Text<br />';
+  	// Output starts here
+  	$dir = ABSPATH . 'wp-content/plugins/just-another-author-widget/';
 	
-	// Show Website Checkbox
-  	$checked = "";
-  	if($options['show_website'])
-  		$checked = "checked";
-  	echo '<input type="checkbox" name="show_author-show_website" id="show_author-show_website" value="true" ' . $checked . '/>Show Author Website link Text';
-	echo '</p>';
-	echo '<p>'._e('<b>Summary Trim Text</b>');
-		echo '<input type="text" style="width:220px" id="show_author-widget-readfulltext" name="show_author-widget-readfulltext" value="'. $options['readfulltext'].'" />';
-	echo '</p>';
-	echo '<p>'._e('<b>More From Author Link Text</b>');
-		echo '<input type="text" style="width:220px" id="show_author-widget-moretext" name="show_author-widget-moretext" value="'. $options['moretext'].'" />';
-	echo '</p>';
-	echo '<p>'._e('<b>Link Description Text</b>').'<input type="text" style="width:220px" id="show_author-widget-websitelinktext" name="show_author-widget-websitelinktext" value="' . $options['websitelinktext'] .'" />';
-	echo '</p>';
-	echo '<p>'._e('<b>Max Summary Length</b>');
-		echo '<input type="text" style="width:220px" id="show_author-widget-charlimit" name="show_author-widget-charlimit" value="'. $options['charlimit'].'" />';
-	echo '</p>';
-	echo '<p>'._e('<b>NB</b>');
-	echo 'To modify the look of the widget, use the editor to edit the widget_template.html!';
-	echo '<input type="hidden" id="show_author_widget-submit" name="show_author-widget-submit" value="1" />';
+	// Sets nececary values.	
+	$print_args = array();
+	$print_content = file_get_contents($dir . "template_controlpanel.html");
+	
+	
+	/*
+	
+	
+	
+	
+	
+	*/	
+	// Adds to replace queue
+	//
+	// Replace Queue starts here
+	$print_args['title'] = $options['title'];
+	$print_args['profilelength'] = $options['profile_length'];
+	$print_args['textlink'] = $options['text_link'];
+	$print_args['textauthor'] = $options['text_author'];
+	$print_args['avatarsize'] = $options['avatar_size'];
+	
+	// Display IMG
+	$print_args['displayimg'] = "";
+	if($options['display_img'])
+		$print_args['displayimg'] = "checked";
+	
+	// Display display_author_webpage_link
+	$print_args['displaywebpage'] = "";
+	if($options['display_author_webpage_link'])
+		$print_args['displaywebpage'] = "checked";
+		
+	// Display display_author_profile_link
+	$print_args['displayauthorprofilelink'] = "";
+	if($options['display_author_profile_link'])
+		$print_args['displayauthorprofilelink'] = "checked";
+		
+	// Display IM Strip
+	$print_args['displayimicons'] = "";
+	if($options['display_im_icons'])
+		$print_args['displayimicons'] = "checked";
+			
+	// Display display_profile
+	$print_args['displayprofile'] = "";
+	if($options['display_profile'])
+		$print_args['displayprofile'] = "checked";
+	
+	// ENABLE TAG POST COUNT	
+	$print_args['enabletagpostcount'] = "";
+	if($options['enable_tag_postcount'])
+		$print_args['enabletagpostcount'] = "checked";
+	
+	// ENABLE TAG PROFILE	
+	$print_args['enabletagprofile'] = "";
+	if($options['enable_tag_profile'])
+		$print_args['enabletagprofile'] = "checked";
+		
+	// ENABLE TAG SITE URL
+	$print_args['enabletagsiteurl'] = "";
+	if($options['enable_tag_site-url'])
+		$print_args['enabletagsiteurl'] = "checked";
+		
+	// ENABLE TAG SITE TEXT
+	$print_args['enabletagsitetext'] = "";
+	if($options['enable_tag_site-text'])
+		$print_args['enabletagsitetext'] = "checked";
 
+	// ENABLE TAG PROFILE URL
+	$print_args['enabletagprofileurl'] = "";
+	if($options['enable_tag_profile-url'])
+		$print_args['enabletagprofileurl'] = "checked";
+
+	// ENABLE TAG PROFILE TEXT
+	$print_args['enabletagprofiletext'] = "";
+	if($options['enable_tag_profile-text'])
+		$print_args['enabletagprofiletext'] = "checked";
+	
+	$print_args['enabletagauthorfullname'] = "";
+	if($options['enable_tag_authorfullname'])
+		$print_args['enabletagauthorfullname'] = "checked";
+
+	// MICROTIME
+	$print_args['microtimechecked'] = "";
+	if($options['microtime'])
+		$print_args['microtimechecked'] = "checked";
+	
+	$print_args['microtimer'] = "";
+	if($options['microtime'])
+		$print_args['microtimer'] = $options['microtime_stored_time'];
+	/*
+	
+	
+	
+	
+	*/
+	$key_ar = array_keys($print_args);
+	foreach ($key_ar as $key)
+	{
+		$print_content = str_replace('[' . strtoupper($key) . ']', $print_args[$key], $print_content);
+	}
+
+	echo $print_content;
 	return;
 }
 function showauthor_activate()
@@ -155,14 +293,23 @@ function showauthor_activate()
 	$options = array(
 		'widget' => array(
 			'title' => 'About Author',
-	  		'moretext' => 'More posts by the Author',
-	  		'readfulltext' => '...',
-	  		'charlimit' => 150,
-	  		'show_image' => true,
-	  		'show_text' => true,
-	  		'show_website' => true,
-	  		'websitelinktext' => 'Here',
-	  		'websitetext' => 'Website: __LINK__'
+			'display_img' => true,
+			'display_author_webpage_link' => true,
+			'display_author_profile_link' => true,
+			'display_im_icons' => false,
+			'display_profile' => true,
+			'profile_length' => 150,
+			'text_link' => "Author's Webpage",
+			'text_author' => "Author's Profile",
+			'enable_tag_postcount' => true,
+			'enable_tag_profile' => true,
+			'enable_tag_site-url' => true,
+			'enable_tag_site-text' => true,
+			'enable_tag_profile-url' => true,
+			'enable_tag_profile-text' => true,
+			'enable_tag_authorfullname' => true,
+			'avatar_size' => 96,
+			'microtime' => false
 	  		)
 	  	);
 	 add_option("showauthor_widget", $options['widget']);
@@ -173,14 +320,14 @@ function showauthor_activate()
 	 $saved_template_path = ABSPATH . 'wp-content/plugins/just-another-author-widget/saved_template.html';
 	 if( file_exists($saved_template_path) )
 	 {
-	 	if(!copy($saved_template_path, $used_template_path))
+	 	/*if(!copy($saved_template_path, $used_template_path))
 	 	{
 	 		echo 'JAAW failed to copy the saved template, you must do so yourself!';
 	 	}
 	 	else
 	 	{
 	 		unlink($saved_template_path);
-	 	}
+	 	}*/
 	 	
 	 }
 	 
