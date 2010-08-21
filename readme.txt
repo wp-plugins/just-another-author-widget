@@ -51,6 +51,10 @@ Most of these tags can be turned on and off from the widget control panel. Turn 
 None at this time
 
 == Changelog ==
+
+= 0.2.1 =
+* Fixed some bugs!
+
 = 0.2.0 = 
 * Completely new control panel
 * Completely new widget backbone

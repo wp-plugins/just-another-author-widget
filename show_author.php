@@ -3,7 +3,7 @@
 Plugin Name: Just Another Author Widget
 Plugin URI: http://blog.tommyolsen.net/category/programming/wp-prog/
 Description: Shows information about the Post author in the Widget Area
-Version: 0.2.0
+Version: 0.2.1
 Author: Tommy Stigen Olsen
 Author URI: http://blog.tommyolsen.net
 License: BSD
@@ -82,7 +82,7 @@ function showauthor_widget($args)
 		if($options['enable_tag_site-url'])		$parg['webpageurl'] = get_the_author_url($authordata->ID);
 		if($options['enable_tag_site-text'])	$parg['webpagetext'] = $options['text_link'];
 		if($options['enable_tag_profile-url'])	$parg['profileurl'] = get_author_link(false, $authordata->ID);
-		if($options['enable_tag_profile_text'])	$parg['profiletext'] = $options['text_author'];
+		if($options['enable_tag_profile-text'])	$parg['profiletext'] = $options['text_author'];
 		If($options['enable_tag_authorfullname']) $parg['authorfullname'] = get_the_author_firstname($authordata->ID) . " " . get_the_author_lastname($authordata->ID);
 			
 		// Start parsing $parg
@@ -248,7 +248,7 @@ function showauthor_widget_control()
 	// ENABLE TAG SITE TEXT
 	$print_args['enabletagsitetext'] = "";
 	if($options['enable_tag_site-text'])
-		$print_args['enabletagprofile'] = "checked";
+		$print_args['enabletagsitetext'] = "checked";
 
 	// ENABLE TAG PROFILE URL
 	$print_args['enabletagprofileurl'] = "";
@@ -299,8 +299,8 @@ function showauthor_activate()
 			'display_im_icons' => false,
 			'display_profile' => true,
 			'profile_length' => 150,
-			'text_link' => "Author\'s Webpage",
-			'text_author' => "Author\'s Profile",
+			'text_link' => "Author's Webpage",
+			'text_author' => "Author's Profile",
 			'enable_tag_postcount' => true,
 			'enable_tag_profile' => true,
 			'enable_tag_site-url' => true,
