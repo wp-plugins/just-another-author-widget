@@ -52,6 +52,10 @@ None at this time
 
 == Changelog ==
 
+= 0.2.5 =
+* Added the posibility to disable widget for specified users.
+* Fixed some more bugs!
+
 = 0.2.1 =
 * Fixed some bugs!
 

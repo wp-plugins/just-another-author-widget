@@ -3,7 +3,7 @@
 Plugin Name: Just Another Author Widget
 Plugin URI: http://blog.tommyolsen.net/category/programming/wp-prog/
 Description: Shows information about the Post author in the Widget Area
-Version: 0.2.1
+Version: 0.2.5
 Author: Tommy Stigen Olsen
 Author URI: http://blog.tommyolsen.net
 License: BSD
@@ -17,6 +17,17 @@ function showauthor_widget($args)
 		$starttime = microtime(true);
 		global $authordata;
 		$options = get_option('showauthor_widget');
+		
+		$disablees = explode(",", $options['disabled_users']);
+		
+		foreach($disablees as $user)
+		{
+			if($user == $authordata->user_login)
+				return;
+			if($user == $authordata->ID)
+				return;
+		}
+		
 		
 		// Finding plugin install dir,
 		$dir = ABSPATH . 'wp-content/plugins/just-another-author-widget/';
@@ -131,7 +142,7 @@ function showauthor_widget_control()
 		$newoptions['text_link'] = strip_tags(stripslashes($_POST['jaaw-text_link']));
 		$newoptions['text_author'] = strip_tags(stripslashes($_POST['jaaw-text_author']));
 		$newoptions['avatar_size'] = strip_tags(stripslashes($_POST['jaaw-avatar_size']));
-		
+		$newoptions['disabled_users'] = strip_tags(stripslashes($_POST['jaaw-disabled_users']));
 		
 		// Show Image 
 		if($_POST['jaaw-display_img'])					$newoptions['display_img'] = true;
@@ -204,7 +215,7 @@ function showauthor_widget_control()
 	$print_args['textlink'] = $options['text_link'];
 	$print_args['textauthor'] = $options['text_author'];
 	$print_args['avatarsize'] = $options['avatar_size'];
-	
+	$print_args['disabledusers'] = $options['disabled_users'];
 	// Display IMG
 	$print_args['displayimg'] = "";
 	if($options['display_img'])
@@ -309,7 +320,8 @@ function showauthor_activate()
 			'enable_tag_profile-text' => true,
 			'enable_tag_authorfullname' => true,
 			'avatar_size' => 96,
-			'microtime' => false
+			'microtime' => false,
+			'disabled_users' => ''
 	  		)
 	  	);
 	 add_option("showauthor_widget", $options['widget']);
