@@ -3,7 +3,7 @@
 Plugin Name: Just Another Author Widget
 Plugin URI: http://blog.tommyolsen.net/category/programming/wp-prog/
 Description: Shows information about the Post author in the Widget Area
-Version: 0.2.5
+Version: 0.3.0
 Author: Tommy Stigen Olsen
 Author URI: http://blog.tommyolsen.net
 License: BSD
