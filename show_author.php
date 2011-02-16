@@ -6,7 +6,7 @@ Description: Shows information about the Post author in the Widget Area
 Version: 0.3.1
 Author: Tommy Stigen Olsen
 Author URI: http://blog.tommyolsen.net
-License: BSD
+License: BSD 
 */
 ?>
 <?php
