@@ -52,10 +52,13 @@ Most of these tags can be turned on and off from the widget control panel. Turn 
 
 == Screenshots ==
 
-1. Control Panel
-2. Widget in the Wild
+1. Widget in the Wild
+2. Control Panel
 
 == Changelog ==
+= 0.3.1 =
+* Fixed an unknown but fairly stupid error
+
 = 0.3.0 =
 * More universal design
 * Code Cleanup
@@ -81,4 +84,19 @@ Most of these tags can be turned on and off from the widget control panel. Turn 
 * Updating to new version no longer updates the widget_template, unless it really is needed.
 
 = 0.1.2 = 
-* Fixed
+* Fixed bug that made the plugin look for the template in the wrong directory!
+
+= 0.1.1 =
+* Widget Control improvements, removed some useless controls and some inline help.
+
+= 0.1 =
+* First Release of this plugin
+
+== Upgrade Notice == 
+= 0.2 =
+When you upgrade from 0.1.x to 0.2, your widget template will be replaced.
+This is because the format for all tags have changed from using two underscores before and after a tag to using squared brackets like BBCodes.
+
+= 0.1 =
+None yet
+
