@@ -367,8 +367,8 @@ function showauthor_deactivate()
 function showauthor_init()
 {
 	$class['classname'] = 'showauthor_widget';
-	wp_register_sidebar_widget('tommy_show_author', __('Just Another Author Widget'), 'showauthor_widget', $class);
-  	wp_register_widget_control('tommy_show_author', __('Just Another Author Widget'), 'showauthor_widget_control', 'width=200&height=200');
+	wp_register_sidebar_widget('tommy_show_author',__('Just Another Author Widget'),'showauthor_widget',$class);
+  	wp_register_widget_control('tommy_show_author',__('Just Another Author Widget'),'showauthor_widget_control','width=200&height=200');
   
 	
 	return; 
