@@ -6,7 +6,7 @@
 // all content within span tags
 		if (Click_Menuz.style.display == "none")		
 		{
-			Click_Menuz.style.display = "";
+			Click_Menuz.style.display = "block";
 		}
 		else
 		{
@@ -14,47 +14,45 @@
 		}
 	}
 </script>
-<p>
+<h3>Box Settings </h3>
+<p style="margin-left: 12px;">
 	<b>Title:</b><br />
 	<input type="text" value="[TITLE]" id="jaaw-title" name="jaaw-title" class="jaaw-input" />
 </p>
-<p>
-<b>Display Options</b><br />
-<input type="checkbox" name="jaaw-display_img" id="jaaw-display_img" class="jaaw-input" [DISPLAYIMG]/> Display Image<br />
-<input type="checkbox" class="jaaw-input" id="jaaw-display_author_webpage_link" name="jaaw-display_author_webpage_link" [DISPLAYWEBPAGE] /> Display Author's Webpage<br />
-<input type="checkbox" class="jaaw-input" id="jaaw-display_author_profile_link" name="jaaw-display_author_profile_link" [DISPLAYAUTHORPROFILELINK] />
-Display Author's Profile<br /> 
-<!--<input type="checkbox" class="jaaw-input" id="jaaw-display_im_icons" name="jaaw-display_im_icons" [DISPLAYIMICONS] /> Display IM Icon Strip--> <br />
-<input type="checkbox" class="jaaw-input" id="jaaw-display_profile" name="jaaw-display_profile" [DISPLAYPROFILE] /> Display Bio<br />
-Trim Bio Length to:<br />
-<input type="text" class="jaaw-input" id="jaaw-profile_length" name="jaaw-profile_length" value="[PROFILELENGTH]" />
-</p>
-<p>
-	<b>Settings</b><br />
+<p style="margin-left: 12px;">
+	<b>Display Options</b><br />
+	<input type="checkbox" name="jaaw-display_img" id="jaaw-display_img" class="jaaw-input" [DISPLAYIMG]/> Display Image<br />
+	<input type="checkbox" class="jaaw-input" id="jaaw-display_author_webpage_link" name="jaaw-display_author_webpage_link" [DISPLAYWEBPAGE] /> Display Author's Webpage<br />
+	<input type="checkbox" class="jaaw-input" id="jaaw-display_author_profile_link" name="jaaw-display_author_profile_link" [DISPLAYAUTHORPROFILELINK] />
+	
+	Display Author's Profile<br /> 
+	<input type="checkbox" class="jaaw-input" id="jaaw-display_profile" name="jaaw-display_profile" [DISPLAYPROFILE] /> Display Bio<br />
+
+	<br />
+	Trim Bio Length to:<br />
+	<input type="text" class="jaaw-input" id="jaaw-profile_length" name="jaaw-profile_length" value="[PROFILELENGTH]" /><br />
 	Author Website Link Text:<br />
-<input type="text" class="jaaw-input" id="jaaw-text_link" name="jaaw-text_link" value="[TEXTLINK]" /><br />
+	<input type="text" class="jaaw-input" id="jaaw-text_link" name="jaaw-text_link" value="[TEXTLINK]" /><br />
+	
 	Author Profile Link Text:<br />
-<input type="text" class="jaaw-input" id="jaaw-text_author" name="jaaw-text_author" value="[TEXTAUTHOR]" /><br />
+	<input type="text" class="jaaw-input" id="jaaw-text_author" name="jaaw-text_author" value="[TEXTAUTHOR]" /><br />
+	
 	Avatar Size:<br />
-<input type="text" class="jaaw-input" id="jaaw-avatar_size" name="jaaw-avatar_size" value="[AVATARSIZE]" /><br />
+	<input type="text" class="jaaw-input" id="jaaw-avatar_size" name="jaaw-avatar_size" value="[AVATARSIZE]" /><br />
 </p>
-<p><b>Additional Tags</b> - <!--<a onclick="toggleBlock('jaawtagbox');">[Show]</a>--></p>
-<div id="jaawtagbox" style="cursor: pointer;"><font size="1"></font><br />
-<input type="checkbox" name="jaaw-enable_tag_postcount" id="jaaw-enable_tag_postcount" class="jaaw-input" [ENABLETAGPOSTCOUNT]/> [POSTCOUNT]<br />
-<input type="checkbox" name="jaaw-enable_tag_authorfullname" id="jaaw-enable_tag_authorfullname" clasS="jaaw-input" [ENABLETAGAUTHORFULLNAME] /> [AUTHORFULLNAME]<br />
-<input type="checkbox" name="jaaw-enable_tag_profile" id="jaaw-enable_tag_profile" class="jaaw-input" [ENABLETAGPROFILE]/> [FULLPROFILE]<br />
-<input type="checkbox" name="jaaw-enable_tag_site-url" id="jaaw-enable_tag_site-url" class="jaaw-input" [ENABLETAGSITEURL]/> [SITEURL]<br />
-<input type="checkbox" name="jaaw-enable_tag_site-text" id="jaaw-enable_tag_site-text" class="jaaw-input" [ENABLETAGSITETEXT]/> [SITETEXT]<br />
-<input type="checkbox" name="jaaw-enable_tag_profile-url" id="jaaw-enable_tag_profile-url" class="jaaw-input" [ENABLETAGPROFILEURL]/> [PROFILEURL]<br />
-<input type="checkbox" name="jaaw-enable_tag_profile-text" id="jaaw-enable_tag_profile-text" class="jaaw-input" [ENABLETAGPROFILETEXT]/> [PROFILETEXT]<br />
-
-
-</div>
-<p><input type="checkbox" name="jaaw-microtime" [MICROTIMECHECKED] />Enable Microtime widget timer<br />
-[MICROTIMER]
-</p>
-<p>
-	<b>Disable widget for certain users</b><br />
+<h3>Additional Settings</h3>
+<p style="margin-left: 12px;">
+	Disable widget for certain users<br />
 	<input type="text" name="jaaw-disabled_users" id="jaaw-disabled_users" class="jaaw-input" value="[DISABLEDUSERS]" /><br />
 	<font size="1">Accepts both userid and nicknames, separated by commas. No need to put spaces after the commas!</font>
-<input type='hidden' name='jaaw-submit' value="yes" />
+</p>
+<h3>Extra Tags</h3>
+<p style="margin-left: 12px;">
+		<input type="checkbox" name="jaaw-enable_tag_postcount" id="jaaw-enable_tag_postcount" class="jaaw-input" [ENABLETAGPOSTCOUNT]/> [POSTCOUNT]<br />
+		<input type="checkbox" name="jaaw-enable_tag_authorfullname" id="jaaw-enable_tag_authorfullname" clasS="jaaw-input" [ENABLETAGAUTHORFULLNAME] /> [AUTHORFULLNAME]<br />
+		<input type="checkbox" name="jaaw-enable_tag_profile" id="jaaw-enable_tag_profile" class="jaaw-input" [ENABLETAGPROFILE]/> [FULLPROFILE]<br />
+		<input type="checkbox" name="jaaw-enable_tag_site-url" id="jaaw-enable_tag_site-url" class="jaaw-input" [ENABLETAGSITEURL]/> [SITEURL]<br />
+		<input type="checkbox" name="jaaw-enable_tag_site-text" id="jaaw-enable_tag_site-text" class="jaaw-input" [ENABLETAGSITETEXT]/> [SITETEXT]<br />
+		<input type="checkbox" name="jaaw-enable_tag_profile-url" id="jaaw-enable_tag_profile-url" class="jaaw-input" [ENABLETAGPROFILEURL]/> [PROFILEURL]<br />
+		<input type="checkbox" name="jaaw-enable_tag_profile-text" id="jaaw-enable_tag_profile-text" class="jaaw-input" [ENABLETAGPROFILETEXT]/> [PROFILETEXT]<br />
+	<font siz

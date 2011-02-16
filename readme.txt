@@ -45,13 +45,23 @@ It is full of markers, which will be replaced with live information when shown o
 [POSTCOUNT]		=	The authors postcount on the site(not comments only posts)
 
 Most of these tags can be turned on and off from the widget control panel. Turn off the ones you don't use to make it render faster.
+= How do i use this piece of software =
+1. Install the software
+2. Open the Widget Control panel from the Administration Panel. (Appearances > Widgets)
+3. Drag the Just Another Author Widget from the sidepanel.
 
 == Screenshots ==
 
-None at this time
+1. Control Panel
+2. Widget in the Wild
 
 == Changelog ==
-
+= 0.3.0 =
+* More universal design
+* Code Cleanup
+* Added a link to the widget-look editor.
+* The Widget control panel looks very nice.
+* More FAQ
 = 0.2.5 =
 * Added the posibility to disable widget for specified users.
 * Fixed some more bugs!
@@ -71,19 +81,4 @@ None at this time
 * Updating to new version no longer updates the widget_template, unless it really is needed.
 
 = 0.1.2 = 
-* Fixed bug that made the plugin look for the template in the wrong directory!
-
-= 0.1.1 =
-* Widget Control improvements, removed some useless controls and some inline help.
-
-= 0.1 =
-* First Release of this plugin
-
-== Upgrade Notice == 
-= 0.2 =
-When you upgrade from 0.1.x to 0.2, your widget template will be replaced.
-This is because the format for all tags have changed from using two underscores before and after a tag to using squared brackets like BBCodes.
-
-= 0.1 =
-None yet
-
+* Fixed

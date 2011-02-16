@@ -14,12 +14,18 @@ function showauthor_widget($args)
 {
 	if(is_single())
 	{
+		// Storing current time for use with the microtimer feature.
 		$starttime = microtime(true);
+		
+		// Loading the authordata and widget options.
 		global $authordata;
 		$options = get_option('showauthor_widget');
 		
-		$disablees = explode(",", $options['disabled_users']);
 		
+		/*
+			
+		*/
+		$disablees = explode(",", $options['disabled_users']);
 		foreach($disablees as $user)
 		{
 			if($user == $authordata->user_login)
@@ -27,6 +33,7 @@ function showauthor_widget($args)
 			if($user == $authordata->ID)
 				return;
 		}
+		
 		
 		
 		// Finding plugin install dir,
@@ -50,6 +57,7 @@ function showauthor_widget($args)
 		// IF DISPLAY IMG
 		if($options['display_img'])
 			$parg['image'] = get_avatar($authordata->ID, $options['avatar_size']);
+			$parg['image'] = str_replace("<img ", "<img class=\"jaaw-avatar-image\" align=\"left\" ", $parg['image']);
 			
 		// IF DISPLAY PROFILE
 		if($options['display_profile'])
@@ -100,16 +108,8 @@ function showauthor_widget($args)
 		$key_ar = array_keys($parg);
 		foreach($key_ar as $key)
 			$content = str_replace("[" . strtoupper($key) . "]", $parg[$key], $content);
-		
-			
-		/*
-		
-		
-		
-		
-		
-		
-		*/
+
+
 		echo $content;
 		
 		
@@ -137,6 +137,8 @@ function showauthor_widget_control()
   
 	// set new options
 	if( $_POST['jaaw-submit'] ) {
+	
+		// Setting values to be stored
 		$newoptions['title'] = strip_tags( stripslashes($_POST['jaaw-title']) );		
 		$newoptions['profile_length'] = strip_tags(stripslashes($_POST['jaaw-profile_length']));
 		$newoptions['text_link'] = strip_tags(stripslashes($_POST['jaaw-text_link']));
@@ -366,27 +368,4 @@ function showauthor_init()
 {
 	$class['classname'] = 'showauthor_widget';
 	wp_register_sidebar_widget('tommy_show_author', __('Just Another Author Widget'), 'showauthor_widget', $class);
-  	wp_register_widget_control('tommy_show_author', __('Just Another Author Widget'), 'showauthor_widget_control', 'width=200&height=200');
-  
-	
-	return; 
-}
-function showauthor_addstyle()
-{
-	$style = WP_PLUGIN_URL . '/just-another-author-widget/jaaw-style.css';
-    $location = WP_PLUGIN_DIR . '/just-another-author-widget/jaaw-style.css';
-
-	if( file_exists($location) )
-	{
-        wp_register_style('template', $style);
-        wp_enqueue_style( 'template');
-
-	}	
-}
-// ACTIONS
-add_action('activate_'.plugin_basename(__FILE__), 'showauthor_activate');
-add_action('deactivate_'.plugin_basename(__FILE__), 'showauthor_deactivate');
-add_action('init', 'showauthor_init');
-add_action('wp_print_styles', 'showauthor_addstyle');
-
-?>
+  	wp_register_widget_control('tommy_show_author', __('Just Another Author Widget'), 'showauthor_widget_cont
