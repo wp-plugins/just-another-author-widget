@@ -3,7 +3,7 @@
 Plugin Name: Just Another Author Widget
 Plugin URI: http://blog.tommyolsen.net/category/programming/wp-prog/
 Description: Shows information about the Post author in the Widget Area
-Version: 0.3.0
+Version: 0.2.5
 Author: Tommy Stigen Olsen
 Author URI: http://blog.tommyolsen.net
 License: BSD
@@ -368,4 +368,27 @@ function showauthor_init()
 {
 	$class['classname'] = 'showauthor_widget';
 	wp_register_sidebar_widget('tommy_show_author', __('Just Another Author Widget'), 'showauthor_widget', $class);
-  	wp_register_widget_control('tommy_show_author', __('Just Another Author Widget'), 'showauthor_widget_cont
+  	wp_register_widget_control('tommy_show_author', __('Just Another Author Widget'), 'showauthor_widget_control', 'width=200&height=200');
+  
+	
+	return; 
+}
+function showauthor_addstyle()
+{
+	$style = WP_PLUGIN_URL . '/just-another-author-widget/jaaw-style.css';
+    $location = WP_PLUGIN_DIR . '/just-another-author-widget/jaaw-style.css';
+
+	if( file_exists($location) )
+	{
+        wp_register_style('template', $style);
+        wp_enqueue_style( 'template');
+
+	}	
+}
+// ACTIONS
+add_action('activate_'.plugin_basename(__FILE__), 'showauthor_activate');
+add_action('deactivate_'.plugin_basename(__FILE__), 'showauthor_deactivate');
+add_action('init', 'showauthor_init');
+add_action('wp_print_styles', 'showauthor_addstyle');
+
+?>
