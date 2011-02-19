@@ -3,7 +3,7 @@
 Plugin Name: Just Another Author Widget
 Plugin URI: http://blog.tommyolsen.net/category/programming/wp-prog/
 Description: Shows information about the Post author in the Widget Area
-Version: 0.3.1
+Version: 0.4.0
 Author: Tommy Stigen Olsen
 Author URI: http://blog.tommyolsen.net
 License: BSD 
@@ -64,6 +64,30 @@ function showauthor_widget($args)
 			$parg['shortprofile'] = summary_trim(get_the_author_description($authordata->ID), $options['profile_length'], "...");
 		else
 			$parg['shortprofile'] = "";
+		
+		// Allow Linebreaks in display_bio
+		if($options['enable_linebreaks'])
+		{
+			$tmp = explode("\r\n", $parg['shortprofile']);
+			$tmp2 = $tmp[0];
+			$i = 1;
+			
+			
+			// If the actual ammounts of lines is less than the max lines,
+			// there is no need to loop that many times.
+			$opts = $options['max_linebreaks'];
+			if(count($tmp) < $opts)
+				$opts = count($tmp);
+				
+				
+			while($i <= $options['max_linebreaks'])
+			{
+				$tmp2 .= "<br />" . $tmp[$i++];
+			}
+			
+			$parg['shortprofile'] = $tmp2;
+		}
+		
 		
 		// Dispaly author website link
 		if($options['display_author_webpage_link'])
@@ -145,7 +169,7 @@ function showauthor_widget_control()
 		$newoptions['text_author'] = strip_tags(stripslashes($_POST['jaaw-text_author']));
 		$newoptions['avatar_size'] = strip_tags(stripslashes($_POST['jaaw-avatar_size']));
 		$newoptions['disabled_users'] = strip_tags(stripslashes($_POST['jaaw-disabled_users']));
-		
+		$newoptions['max_linebreaks'] = intval(strip_tags(stripslashes($_POST['jaaw-max_linebreaks'])));
 		// Show Image 
 		if($_POST['jaaw-display_img'])					$newoptions['display_img'] = true;
 		else											$newoptions['display_img'] = false;
@@ -161,6 +185,9 @@ function showauthor_widget_control()
 		
 		if($_POST['jaaw-display_im_icons'])				$newoptions['display_im_icons'] = true;
 		else											$newoptions['display_im_icons'] = false;
+		
+		if($_POST['jaaw-enable_linebreaks'])			$newoptions['enable_linebreaks'] = true;
+		else											$newoptions['enable_linebreaks'] = false;
 		
 		if($_POST['jaaw-enable_tag_postcount'])			$newoptions['enable_tag_postcount'] = true;
 		else											$newoptions['enable_tag_postcount'] = false;	
@@ -218,10 +245,16 @@ function showauthor_widget_control()
 	$print_args['textauthor'] = $options['text_author'];
 	$print_args['avatarsize'] = $options['avatar_size'];
 	$print_args['disabledusers'] = $options['disabled_users'];
+	$print_args['mlb'] = $options['max_linebreaks'];
+	
 	// Display IMG
 	$print_args['displayimg'] = "";
 	if($options['display_img'])
 		$print_args['displayimg'] = "checked";
+	
+	$print_args['enablelinebreaks'] = "";
+	if($options['enable_linebreaks'])
+		$print_args['enablelinebreaks'] = " checked";
 	
 	// Display display_author_webpage_link
 	$print_args['displaywebpage'] = "";
@@ -314,6 +347,8 @@ function showauthor_activate()
 			'profile_length' => 150,
 			'text_link' => "Author's Webpage",
 			'text_author' => "Author's Profile",
+			'enable_linebreaks' => true,
+			'max_linebreaks' => 4,
 			'enable_tag_postcount' => true,
 			'enable_tag_profile' => true,
 			'enable_tag_site-url' => true,

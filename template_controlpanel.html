@@ -14,6 +14,7 @@
 		}
 	}
 </script>
+<input type="hidden" name="jaaw-submit" value="true" />
 <h3>Box Settings </h3>
 <p style="margin-left: 12px;">
 	<b>Title:</b><br />
@@ -26,11 +27,18 @@
 	<input type="checkbox" class="jaaw-input" id="jaaw-display_author_profile_link" name="jaaw-display_author_profile_link" [DISPLAYAUTHORPROFILELINK] />
 	
 	Display Author's Profile<br /> 
+</p>
+<h3>Biography Settings</h3>
+<p style="margin-left: 12px;">
 	<input type="checkbox" class="jaaw-input" id="jaaw-display_profile" name="jaaw-display_profile" [DISPLAYPROFILE] /> Display Bio<br />
-
-	<br />
 	Trim Bio Length to:<br />
 	<input type="text" class="jaaw-input" id="jaaw-profile_length" name="jaaw-profile_length" value="[PROFILELENGTH]" /><br />
+	<input type="checkbox" class="jaaw-input" id="jaaw-enable_linebreaks" name="jaaw-enable_linebreaks" [ENABLELINEBREAKS] /> Enable Linebreaks in Bio?<br />
+	Max Linebreaks<br />
+	<input type="text" class="jaaw-input" id="jaaw-max_linebreaks" name="jaaw-max_linebreaks" value="[MLB]" /><br />
+</p>
+<h3> Link Settings</h3>
+<p style="margin-left: 12px;">
 	Author Website Link Text:<br />
 	<input type="text" class="jaaw-input" id="jaaw-text_link" name="jaaw-text_link" value="[TEXTLINK]" /><br />
 	
@@ -55,4 +63,5 @@
 		<input type="checkbox" name="jaaw-enable_tag_site-text" id="jaaw-enable_tag_site-text" class="jaaw-input" [ENABLETAGSITETEXT]/> [SITETEXT]<br />
 		<input type="checkbox" name="jaaw-enable_tag_profile-url" id="jaaw-enable_tag_profile-url" class="jaaw-input" [ENABLETAGPROFILEURL]/> [PROFILEURL]<br />
 		<input type="checkbox" name="jaaw-enable_tag_profile-text" id="jaaw-enable_tag_profile-text" class="jaaw-input" [ENABLETAGPROFILETEXT]/> [PROFILETEXT]<br />
-	<font siz
+	<font size="1">Enable and utilize any of these tags to make this plugin suit your own needs. Edit the look of this plugin from <a href="./plugin-editor.php?file=just-another-author-widget/template_widget.html&plugin=just-another-author-widget/show_author.php">here</a></font>
+</p>

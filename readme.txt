@@ -56,6 +56,11 @@ Most of these tags can be turned on and off from the widget control panel. Turn 
 2. Control Panel
 
 == Changelog ==
+
+= 0.4.0 =
+* Added settings to enable/disable line breaks
+* Bug fixes from the 0.3.1 plugin!
+
 = 0.3.1 =
 * Fixed an unknown but fairly stupid error
 
